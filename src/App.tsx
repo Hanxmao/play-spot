@@ -5,7 +5,7 @@ function App() {
   return (
     <>
       {/* TODO: Navbar place holder */}
-      <div>
+      <div className="p-6">
         <Outlet />
       </div>
     </>
