@@ -1,14 +1,15 @@
-import { Outlet } from "react-router";
-import "./App.css";
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import NearbySportsFinder from './components/NearbySportsFinder';
+import PlaceDetail from './components/PlaceDetail';
 
 function App() {
   return (
-    <>
-      {/* TODO: Navbar place holder */}
-      <div className="p-6">
-        <Outlet />
-      </div>
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<NearbySportsFinder />} />
+        <Route path="/place/:id" element={<PlaceDetail />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 

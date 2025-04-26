@@ -1,4 +1,11 @@
-@import "tailwindcss";
-@plugin "daisyui" {
-    themes: garden --default
-  }
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom reusable background */
+.bg-repeat-sports {
+  background-image: url('../public/background.png');
+  background-repeat: repeat;
+  background-size: 100px 100px;
+  background-position: center;
+}
