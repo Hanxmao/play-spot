@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import PlaceCard from './PlaceCard';
 import { CustomPlace } from '../types/CustomPlace';
 
@@ -105,7 +105,7 @@ const NearbySportsFinder: React.FC = () => {
       {!loading && places.length > 0 && (
         <div className="grid gap-4 max-w-2xl mx-auto">
           {places.map((place, idx) => (
-            <div key={idx} onClick={() => navigate(`/place/${idx}`, { state: { place } })} className="cursor-pointer">
+            <div key={idx} onClick={() => navigate(`/locations/${idx}`, { state: { place } })} className="cursor-pointer">
               <PlaceCard
                 name={place.name}
                 vicinity={place.vicinity}

@@ -1,15 +1,20 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import NearbySportsFinder from './components/NearbySportsFinder';
-import PlaceDetail from './components/PlaceDetail';
+import { Outlet } from 'react-router';
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<NearbySportsFinder />} />
-        <Route path="/place/:id" element={<PlaceDetail />} />
-      </Routes>
-    </BrowserRouter>
+    //TODO: remove after fix
+    // <BrowserRouter>
+    //   <Routes>
+    //     <Route path="/" element={<NearbySportsFinder />} />
+    //     <Route path="/place/:id" element={<PlaceDetail />} />
+    //   </Routes>
+    // </BrowserRouter>
+    <>
+      {/* TODO: Navbar place holder */}
+      <div className="p-6 ">
+        <Outlet />
+      </div>
+    </>
   );
 }
 

@@ -1,8 +1,8 @@
 import { createBrowserRouter } from "react-router";
 import App from "./App.tsx";
+import PlaceDetail from "./components/PlaceDetail.tsx";
 import ErrorPage from "./pages/ErrorPage.tsx";
 import HomePage from "./pages/HomePage.tsx";
-import LocationsPage from "./pages/LocationsPage.tsx";
 
 const router = createBrowserRouter([
   {
@@ -11,7 +11,7 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     children: [
       { index: true, element: <HomePage /> }, // index/default page
-      { path: "/locations", element: <LocationsPage /> }, //example routes
+      { path: "/locations/:id", element: <PlaceDetail /> },
     ],
   },
 ]);
