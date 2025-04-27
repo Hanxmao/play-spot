@@ -9,29 +9,32 @@ interface PlaceCardProps {
 const getColor = (status?: string) => {
   switch (status) {
     case 'full':
-      return 'bg-red-500';
+      return 'badge-error'; // red
     case 'crowded':
-      return 'bg-yellow-400';
+      return 'badge-warning'; // yellow
     case 'moderate':
-      return 'bg-blue-400';
+      return 'badge-info'; // blue
     case 'available':
-      return 'bg-green-500';
+      return 'badge-success'; // green
     default:
-      return 'bg-gray-300'; // Unknown status
+      return 'badge-ghost'; // gray/neutral
   }
 };
 
 const PlaceCard: React.FC<PlaceCardProps> = ({ name, vicinity, crowdedness }) => {
   return (
-    <div className="p-4 rounded shadow bg-white border-l-4 border-blue-400 flex flex-col">
-      <div className="flex items-center justify-between">
-        <h3 className="text-lg font-semibold">{name}</h3>
-        <div
-          className={`w-4 h-4 rounded-full ${getColor(crowdedness)}`}
-          title={crowdedness || 'Unknown'}
-        />
+    <div className="card bg-base-100 shadow-md border hover:shadow-lg transition">
+      <div className="card-body p-4">
+        <div className="flex justify-between items-center mb-2">
+          <h3 className="text-xl font-bold text-primary">{name}</h3>
+          {crowdedness && (
+            <div className={`badge ${getColor(crowdedness)} capitalize`}>
+              {crowdedness}
+            </div>
+          )}
+        </div>
+        <p className="text-gray-600">{vicinity}</p>
       </div>
-      <p className="text-sm text-gray-600">{vicinity}</p>
     </div>
   );
 };
