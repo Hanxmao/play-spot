@@ -1,11 +1,10 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router";
+import { useNearbySports } from "../context/NearbySportsContext";
 import PlaceCard from "./PlaceCard";
-import { CustomPlace } from "../types/CustomPlace";
 
 const NearbySportsFinder: React.FC = () => {
-  const [sportType, setSportType] = useState("");
-  const [places, setPlaces] = useState<CustomPlace[]>([]);
+  const { sportType, setSportType, places, setPlaces } = useNearbySports();
   const [loading, setLoading] = useState(false);
   const [scriptLoaded, setScriptLoaded] = useState(false);
   const navigate = useNavigate();
