@@ -11,7 +11,7 @@ function App() {
     // </BrowserRouter>
     <>
       {/* TODO: Navbar place holder */}
-      <div className="p-6 ">
+      <div>
         <Outlet />
       </div>
     </>
