@@ -87,7 +87,7 @@ const NearbySportsFinder: React.FC = () => {
 
       <div className="max-w-md mx-auto text-center mb-6">
         <h2 className="text-4xl font-bold text-primary mb-6">
-          Find Nearby Sports
+          PlaySpot
         </h2>
 
         <div className="form-control">
