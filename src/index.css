@@ -1,6 +1,6 @@
 @import "tailwindcss";
 @plugin "daisyui" {
-    themes: bumblebee --default
+    themes: light --default
   }
 
 /* Custom reusable background */
