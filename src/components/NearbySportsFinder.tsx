@@ -56,6 +56,7 @@ const NearbySportsFinder: React.FC = () => {
                   results
                 ) {
                   const formattedPlaces = results.map((place) => ({
+                    id: place.place_id || `${place.geometry?.location?.lat()}-${place.geometry?.location?.lng()}`,
                     name: place.name || "Unknown Place",
                     vicinity: place.vicinity || "Unknown Address",
                     lat: place.geometry?.location?.lat() || 0,
@@ -86,9 +87,7 @@ const NearbySportsFinder: React.FC = () => {
       <div ref={mapRef} style={{ display: "none" }} />
 
       <div className="max-w-md mx-auto text-center mb-6">
-        <h2 className="text-4xl font-bold text-primary mb-6">
-          PlaySpot
-        </h2>
+        <h2 className="text-4xl font-bold text-primary mb-6">PlaySpot</h2>
 
         <div className="form-control">
           <label htmlFor="sport" className="label">
@@ -125,11 +124,17 @@ const NearbySportsFinder: React.FC = () => {
             <div
               key={idx}
               onClick={() =>
-                navigate(`/locations/${idx}`, { state: { place } })
+                navigate(`/locations/${place.id}`, { state: { place } })
               }
               className="cursor-pointer transition transform hover:scale-105"
             >
-              <PlaceCard name={place.name} vicinity={place.vicinity} />
+              <PlaceCard
+                id={`${place.id}`} // generate a unique ID if no place_id
+                name={place.name}
+                vicinity={place.vicinity}
+                lat={place.lat}
+                lng={place.lng}
+              />
             </div>
           ))}
         </div>

@@ -1,4 +1,5 @@
 export interface CustomPlace {
+  id: string;
   name: string;
   vicinity: string;
   lat: number;

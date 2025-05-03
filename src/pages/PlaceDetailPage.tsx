@@ -1,44 +1,55 @@
-import { useLocation, useNavigate } from 'react-router';
-import { useState } from 'react';
+import { useLocation, useNavigate, useParams } from 'react-router';
+import { useEffect, useState } from 'react';
 import { CustomPlace } from '../types/CustomPlace';
 
 const PlaceDetail: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { place: passedPlace } = location.state as { place: CustomPlace };
+  const { id } = useParams<{ id: string }>();
 
-  // Local state for place (so we can update crowdedness)
-  const [place, setPlace] = useState<CustomPlace>(passedPlace);
+  const passedPlace = location.state?.place as CustomPlace | undefined;
 
-  // Assume user location is also passed later (you can improve later)
+  const [place, setPlace] = useState<CustomPlace | null>(passedPlace || null);
+
+  // Fetch from localStorage if no passed state
+  useEffect(() => {
+    if (!place && id) {
+      const stored = localStorage.getItem('savedPlaces');
+      if (stored) {
+        const savedPlaces: CustomPlace[] = JSON.parse(stored);
+        const found = savedPlaces.find((p) => p.id === id);
+        if (found) {
+          setPlace(found);
+        }
+      }
+    }
+  }, [place, id]);
+
   const userLat = sessionStorage.getItem('userLat');
   const userLng = sessionStorage.getItem('userLng');
 
   const getBadgeColor = (status?: string) => {
     switch (status) {
       case 'full':
-        return 'badge-error'; // red
+        return 'badge-error';
       case 'crowded':
-        return 'badge-warning'; // yellow
+        return 'badge-warning';
       case 'moderate':
-        return 'badge-info'; // blue
+        return 'badge-info';
       case 'available':
-        return 'badge-success'; // green
+        return 'badge-success';
       default:
-        return 'badge-ghost'; // neutral gray
+        return 'badge-ghost';
     }
   };
 
   const updateCrowdedness = (status: 'full' | 'crowded' | 'moderate' | 'available') => {
-    setPlace((prev) => ({
-      ...prev,
-      crowdedness: status,
-    }));
+    setPlace((prev) => (prev ? { ...prev, crowdedness: status } : prev));
   };
 
   const calculateDistance = () => {
-    if (!userLat || !userLng) return '?';
-    const R = 6371; // Earth radius km
+    if (!userLat || !userLng || !place) return '?';
+    const R = 6371;
     const lat1 = parseFloat(userLat);
     const lon1 = parseFloat(userLng);
     const lat2 = place.lat;
@@ -46,12 +57,10 @@ const PlaceDetail: React.FC = () => {
     const dLat = (lat2 - lat1) * (Math.PI / 180);
     const dLon = (lon2 - lon1) * (Math.PI / 180);
     const a =
-      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.sin(dLat / 2) ** 2 +
       Math.cos(lat1 * (Math.PI / 180)) *
-      Math.cos(lat2 * (Math.PI / 180)) *
-      Math.sin(dLon / 2) *
-      Math.sin(dLon / 2);
-
+        Math.cos(lat2 * (Math.PI / 180)) *
+        Math.sin(dLon / 2) ** 2;
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     const d = R * c;
     return d.toFixed(2);
@@ -61,6 +70,9 @@ const PlaceDetail: React.FC = () => {
     return (
       <div className="p-6 text-center text-error">
         Place not found.
+        <button onClick={() => navigate(-1)} className="btn btn-primary mt-4">
+          Go Back
+        </button>
       </div>
     );
   }
@@ -68,7 +80,7 @@ const PlaceDetail: React.FC = () => {
   return (
     <div className="p-6 min-h-screen bg-base-200">
       <button
-        onClick={() => navigate('/')}
+        onClick={() => navigate(-1)}
         className="btn btn-outline btn-primary mb-6"
       >
         ← Back
