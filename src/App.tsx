@@ -1,5 +1,6 @@
 import { Outlet } from 'react-router';
 import { NearbySportsProvider } from './context/NearbySportsContext';
+import NavBar from './components/Navbar';
 
 function App() {
   return (
@@ -7,7 +8,7 @@ function App() {
       {/* TODO: Navbar place holder */}
       <div>
         <NearbySportsProvider >
-
+        <NavBar />
         <Outlet />
         </NearbySportsProvider>
       </div>
