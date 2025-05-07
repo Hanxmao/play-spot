@@ -11,6 +11,8 @@ const PlaceDetail: React.FC = () => {
 
   const [place, setPlace] = useState<CustomPlace | null>(passedPlace || null);
 
+  const [showPopup, setShowPopup] = useState(false); // PopUp placeholder
+
   // Fetch from localStorage if no passed state
   useEffect(() => {
     if (!place && id) {
@@ -45,6 +47,10 @@ const PlaceDetail: React.FC = () => {
 
   const updateCrowdedness = (status: 'full' | 'crowded' | 'moderate' | 'available') => {
     setPlace((prev) => (prev ? { ...prev, crowdedness: status } : prev));
+
+    // Show thank you popup
+    setShowPopup(true);
+    setTimeout(() => setShowPopup(false), 2000); // hide after 2 seconds
   };
 
   const calculateDistance = () => {
@@ -59,8 +65,8 @@ const PlaceDetail: React.FC = () => {
     const a =
       Math.sin(dLat / 2) ** 2 +
       Math.cos(lat1 * (Math.PI / 180)) *
-        Math.cos(lat2 * (Math.PI / 180)) *
-        Math.sin(dLon / 2) ** 2;
+      Math.cos(lat2 * (Math.PI / 180)) *
+      Math.sin(dLon / 2) ** 2;
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     const d = R * c;
     return d.toFixed(2);
@@ -133,6 +139,13 @@ const PlaceDetail: React.FC = () => {
           >
             Full
           </button>
+          {showPopup && (
+            <div className="fixed inset-0 flex items-center justify-center z-50">
+              <div className="bg-green-300 bg-opacity-90 text-green-900 text-lg px-6 py-4 rounded-xl shadow-2xl">
+                Thank you for your response!
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
