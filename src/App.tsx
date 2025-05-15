@@ -7,7 +7,6 @@ import ServiceWorkerWrapper from './components/ServiceWorkerWrapper';
 function App() {
   return (
     <>
-      {/* TODO: Navbar place holder */}
       <div>
         <IosInstallPrompt />
         <ServiceWorkerWrapper />
