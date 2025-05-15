@@ -24,33 +24,14 @@ export default function ServiceWorkerWrapper() {
     }
 
     return (
-        <div style={bannerStyle}>
+        <div className="fixed bottom-0 left-0 right-0 p-3 bg-gray-800 text-white flex justify-between items-center z-50">
             <span>A new version is available.</span>
-            <button onClick={reloadPage} style={buttonStyle}>Update</button>
+            <button
+                onClick={reloadPage}
+                className="ml-4 px-3 py-2 bg-white text-gray-800 border-none cursor-pointer font-bold"
+            >
+                Update
+            </button>
         </div>
     );
 }
-
-const bannerStyle: React.CSSProperties = {
-    position: 'fixed',
-    bottom: '0',
-    left: '0',
-    right: '0',
-    padding: '12px',
-    backgroundColor: '#333',
-    color: '#fff',
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    zIndex: 1000
-};
-
-const buttonStyle: React.CSSProperties = {
-    marginLeft: '1em',
-    padding: '8px 12px',
-    backgroundColor: '#fff',
-    color: '#333',
-    border: 'none',
-    cursor: 'pointer',
-    fontWeight: 'bold'
-};

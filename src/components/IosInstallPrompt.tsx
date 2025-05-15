@@ -18,33 +18,14 @@ export default function IosInstallPrompt() {
     }
 
     return (
-        <div style={bannerStyle}>
+        <div className="fixed bottom-0 left-0 right-0 p-3 bg-gray-800 text-white flex justify-between items-center z-50">
             <span>To install this app, tap the share icon and select "Add to Home Screen".</span>
-            <button onClick={() => setShouldShow(false)} style={buttonStyle}>Close</button>
+            <button
+                onClick={() => setShouldShow(false)}
+                className="ml-4 px-3 py-2 bg-white text-gray-800 border-none cursor-pointer font-bold"
+            >
+                Close
+            </button>
         </div>
     );
 }
-
-const bannerStyle: React.CSSProperties = {
-    position: 'fixed',
-    bottom: '0',
-    left: '0',
-    right: '0',
-    padding: '12px',
-    backgroundColor: '#333',
-    color: '#fff',
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    zIndex: 1000
-};
-
-const buttonStyle: React.CSSProperties = {
-    marginLeft: '1em',
-    padding: '8px 12px',
-    backgroundColor: '#fff',
-    color: '#333',
-    border: 'none',
-    cursor: 'pointer',
-    fontWeight: 'bold'
-};
