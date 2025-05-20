@@ -1,86 +1,69 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router";
 import { useNearbySports } from "../context/NearbySportsContext";
 import PlaceCard from "./PlaceCard";
+import axios from "axios";
+
 
 const NearbySportsFinder: React.FC = () => {
   const { sportType, setSportType, places, setPlaces } = useNearbySports();
   const [loading, setLoading] = useState(false);
-  const [scriptLoaded, setScriptLoaded] = useState(false);
   const navigate = useNavigate();
   const mapRef = useRef<HTMLDivElement | null>(null);
 
-  useEffect(() => {
-    if (!window.google) {
-      const script = document.createElement("script");
-      script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyCw09DACyXcLPQieL7vQFqmSC7F7NDnvdg&libraries=places`;
-      script.async = true;
-      script.defer = true;
-      script.onload = () => setScriptLoaded(true);
-      document.body.appendChild(script);
-    } else {
-      setScriptLoaded(true);
-    }
-  }, []);
+const handleSportChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const selectedSport = e.target.value;
+  setSportType(selectedSport);
+  setPlaces([]);
 
-  const handleSportChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedSport = e.target.value;
-    setSportType(selectedSport);
-    setPlaces([]);
+  if (!selectedSport) return;
 
-    if (!selectedSport || !scriptLoaded) return;
-
-    if (navigator.geolocation) {
-      setLoading(true);
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
+  if (navigator.geolocation) {
+    setLoading(true);
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        try {
           const { latitude, longitude } = position.coords;
-          const location = new window.google.maps.LatLng(latitude, longitude);
           sessionStorage.setItem("userLat", latitude.toString());
           sessionStorage.setItem("userLng", longitude.toString());
 
-          if (mapRef.current) {
-            const service = new window.google.maps.places.PlacesService(
-              mapRef.current
-            );
+          const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/locations`);
+          console.log("API response:", response.data);
+          console.log("Filtering for sport:", selectedSport);
 
-            service.nearbySearch(
-              {
-                location,
-                radius: 5000,
-                keyword: selectedSport,
-              },
-              (results, status) => {
-                if (
-                  status === window.google.maps.places.PlacesServiceStatus.OK &&
-                  results
-                ) {
-                  const formattedPlaces = results.map((place) => ({
-                    id: place.place_id || `${place.geometry?.location?.lat()}-${place.geometry?.location?.lng()}`,
-                    name: place.name || "Unknown Place",
-                    vicinity: place.vicinity || "Unknown Address",
-                    lat: place.geometry?.location?.lat() || 0,
-                    lng: place.geometry?.location?.lng() || 0,
-                    sport: selectedSport,
-                  }));
-                  setPlaces(formattedPlaces);
-                } else {
-                  console.error("PlacesService failed:", status);
-                }
-                setLoading(false);
-              }
-            );
-          }
-        },
-        (error) => {
-          console.error("Error getting location:", error);
+          // Filter places by selected sport
+          const filtered = response.data
+            .filter((loc: any) =>
+              loc.sports.some((s: any) =>
+                s.name.toLowerCase() === selectedSport.toLowerCase()
+              )
+            )
+            .map((loc: any) => ({
+              id: loc.locationId,
+              name: loc.name,
+              vicinity: loc.address,
+              lat: loc.latitude,
+              lng: loc.longitude,
+              sport: selectedSport,
+            }));
+
+          setPlaces(filtered);
+        } catch (err) {
+          console.error("Failed to fetch locations:", err);
+        } finally {
           setLoading(false);
         }
-      );
-    } else {
-      alert("Geolocation is not supported by this browser.");
-    }
-  };
+      },
+      (error) => {
+        console.error("Geolocation error:", error);
+        setLoading(false);
+      }
+    );
+  } else {
+    alert("Geolocation is not supported by this browser.");
+  }
+};
+
 
   return (
     <div className="p-6 min-h-screen bg-base-200 relative">
@@ -100,14 +83,13 @@ const NearbySportsFinder: React.FC = () => {
             className="select select-bordered select-primary w-full"
             value={sportType}
             onChange={handleSportChange}
-            disabled={!scriptLoaded}
           >
             <option value="">-- Select a Sport --</option>
-            <option value="tennis court">Tennis</option>
-            <option value="swimming pool">Swimming</option>
-            <option value="soccer field">Soccer</option>
-            <option value="lacrosse field">Lacrosse</option>
-            <option value="basketball court">Basketball</option>
+            <option value="tennis">Tennis</option>
+            <option value="swimming">Swimming</option>
+            <option value="soccer">Soccer</option>
+            <option value="lacrosse">Lacrosse</option>
+            <option value="basketball">Basketball</option>
           </select>
         </div>
       </div>
