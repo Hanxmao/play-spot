@@ -18,12 +18,7 @@ const SavedLocations: React.FC = () => {
             <Link to={`/locations/${place.id}`} key={place.id}>
 
                 <PlaceCard
-                  id={place.id}
-                  name={place.name}
-                  vicinity={place.vicinity}
-                  lat={place.lat}
-                  lng={place.lng}
-                  showCrowdedness={false}
+                  place={place}
                 />
             </Link>
           ))}
