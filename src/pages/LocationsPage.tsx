@@ -1,17 +1,18 @@
-import { useEffect, useState } from "react";
-import PlaceCard from "../components/PlaceCard";
 import axios from "axios";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
+import PlaceCard from "../components/PlaceCard";
 import { Location } from "../types/entities";
 
 const LocationsPage = () => {
   const [allLocations, setAllLocations] = useState<Location[]>([])
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
   
   useEffect(() => {
     const fetchLocations = async () => {
       try {
         const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/locations`);
-        console.log("response", response)
         setAllLocations(response.data);
       } catch (error) {
         console.error("Error fetching locations:", error);
@@ -33,11 +34,17 @@ const LocationsPage = () => {
     ) : allLocations.length > 0 ? (
       <div className="grid gap-6 max-w-2xl mx-auto">
         {allLocations.map((location) => (
-          <div key={location.locationId}>
-            <PlaceCard
-              location={location}
-            />
-          </div>
+         <div
+         key={location.locationId}
+         onClick={() =>{
+           navigate(`/locations/${location.locationId}`, { state: { place: location } })
+         }}
+         className="cursor-pointer transition transform hover:scale-105"
+       >
+         <PlaceCard
+           location={location}
+         />
+       </div>
         ))}
       </div>
     ) : (

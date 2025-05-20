@@ -102,11 +102,10 @@ const handleSportChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
 
       {!loading && places.length > 0 && (
         <div className="grid gap-6 max-w-2xl mx-auto">
-          {places.map((place, idx) => (
+          {places.map((place) => (
             <div
-              key={idx}
+              key={place.locationId}
               onClick={() =>{
-                console.log("Navigating with place:", place);
                 navigate(`/locations/${place.locationId}`, { state: { place: place } })
               }}
               className="cursor-pointer transition transform hover:scale-105"

@@ -8,7 +8,6 @@ const PlaceDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
 
   const passedPlace = location.state?.place as Location | undefined;
-  console.log("passed", passedPlace)
 
   const [place, setPlace] = useState<Location | null>(passedPlace || null);
 
