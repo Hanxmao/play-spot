@@ -1,18 +1,18 @@
 import React, { createContext, useContext, useState } from "react";
-import { CustomPlace } from "../types/CustomPlace";
+import { Location } from "../types/entities";
 
 interface NearbySportsContextType {
   sportType: string;
   setSportType: (sport: string) => void;
-  places: CustomPlace[];
-  setPlaces: (places: CustomPlace[]) => void;
+  places: Location[];
+  setPlaces: (places: Location[]) => void;
 }
 
 const NearbySportsContext = createContext<NearbySportsContextType | undefined>(undefined);
 
 export const NearbySportsProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [sportType, setSportType] = useState('');
-  const [places, setPlaces] = useState<CustomPlace[]>([]);
+  const [places, setPlaces] = useState<Location[]>([]);
 
   return (
     <NearbySportsContext.Provider value={{ sportType, setSportType, places, setPlaces }}>

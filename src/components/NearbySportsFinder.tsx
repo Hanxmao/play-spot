@@ -3,6 +3,7 @@ import { useNavigate } from "react-router";
 import { useNearbySports } from "../context/NearbySportsContext";
 import PlaceCard from "./PlaceCard";
 import axios from "axios";
+import { Location } from "../types/entities";
 
 
 const NearbySportsFinder: React.FC = () => {
@@ -32,18 +33,18 @@ const handleSportChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
 
           // Filter places by selected sport
           const filtered = response.data
-            .filter((loc: any) =>
+            .filter((loc: Location) =>
               loc.sports.some((s: any) =>
                 s.name.toLowerCase() === selectedSport.toLowerCase()
               )
             )
-            .map((loc: any) => ({
-              id: loc.locationId,
+            .map((loc: Location) => ({
+              locationId: loc.locationId,
               name: loc.name,
-              vicinity: loc.address,
-              lat: loc.latitude,
-              lng: loc.longitude,
-              sport: selectedSport,
+              address: loc.address,
+              latitude: loc.latitude,
+              longitude: loc.longitude,
+              sports: loc.sports,
             }));
 
           setPlaces(filtered);
@@ -104,13 +105,14 @@ const handleSportChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
           {places.map((place, idx) => (
             <div
               key={idx}
-              onClick={() =>
-                navigate(`/locations/${place.id}`, { state: { place } })
-              }
+              onClick={() =>{
+                console.log("Navigating with place:", place);
+                navigate(`/locations/${place.locationId}`, { state: { place: place } })
+              }}
               className="cursor-pointer transition transform hover:scale-105"
             >
               <PlaceCard
-                place={place}
+                location={place}
               />
             </div>
           ))}
