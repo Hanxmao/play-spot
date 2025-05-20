@@ -26,8 +26,7 @@ const handleSportChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
           const { latitude, longitude } = position.coords;
           sessionStorage.setItem("userLat", latitude.toString());
           sessionStorage.setItem("userLng", longitude.toString());
-
-          const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/locations`);
+          const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/locations`);
           console.log("API response:", response.data);
           console.log("Filtering for sport:", selectedSport);
 
