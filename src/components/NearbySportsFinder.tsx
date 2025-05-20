@@ -110,11 +110,7 @@ const handleSportChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
               className="cursor-pointer transition transform hover:scale-105"
             >
               <PlaceCard
-                id={`${place.id}`} // generate a unique ID if no place_id
-                name={place.name}
-                vicinity={place.vicinity}
-                lat={place.lat}
-                lng={place.lng}
+                place={place}
               />
             </div>
           ))}
