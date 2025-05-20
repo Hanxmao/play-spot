@@ -13,9 +13,9 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     children: [
       { index: true, element: <HomePage /> }, // index/default page
-      { path: "/locations", element: <LocationsPage /> },
-      { path: "/locations/:id", element: <PlaceDetail /> },
-      { path: "/saved", element: <SavedLocations />},
+      { path: "locations", element: <LocationsPage /> },
+      { path: "locations/:id", element: <PlaceDetail /> },
+      { path: "saved", element: <SavedLocations />},
     ],
   },
 ]);

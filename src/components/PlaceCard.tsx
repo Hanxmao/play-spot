@@ -1,14 +1,11 @@
 import React from "react";
 import { useSavedPlaces } from "../hooks/useSavedPlaces";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
+import { Location } from "../types/entities";
 
 
 interface PlaceCardProps {
-  id: string; // unique id (we'll use lat+lng string if no place_id)
-  name: string;
-  vicinity: string;
-  lat: number;
-  lng: number;
+  location: Location;
   crowdedness?: "full" | "crowded" | "moderate" | "available";
   showCrowdedness?: boolean
 }
@@ -45,33 +42,31 @@ const getCrowdednessDescription = (status?: string) => {
 };
 
 const PlaceCard: React.FC<PlaceCardProps> = ({
-  id,
-  name,
-  vicinity,
-  lat,
-  lng,
+  location,
   crowdedness,
   showCrowdedness = true
 }) => {
   const { savePlace, unsavePlace, isSaved } = useSavedPlaces();
-  const saved = isSaved(id);
-  
+  const saved = isSaved(location.locationId);
   const handleToggleSave = () => {
     if (saved) {
-      unsavePlace(id);
+      unsavePlace(location.locationId);
     } else {
-      savePlace({ id, name, vicinity, lat, lng });
+      savePlace(location);
     }
   };
   return (
     <div className="card bg-base-100 shadow-md border hover:shadow-lg transition">
       <div className="card-body p-4">
         <div className="flex justify-between items-center mb-2">
-          <h3 className="text-xl font-bold text-primary">{name}</h3>
+          <h3 className="text-xl font-bold text-primary">{location.name}</h3>
           <div className="flex items-center space-x-2">
             <button
               className="btn btn-ghost text-red-500"
-              onClick={handleToggleSave}
+              onClick={(e) => {
+                e.stopPropagation(); 
+                handleToggleSave();
+              }}
             >
               {saved ? <FaHeart /> : <FaRegHeart />}
             </button>
@@ -91,7 +86,7 @@ const PlaceCard: React.FC<PlaceCardProps> = ({
             </div>
           </div>
         </div>
-        <p className="text-gray-600">{vicinity}</p>
+        <p className="text-gray-600">{location.address}</p>
       </div>
     </div>
   );

@@ -1,15 +1,15 @@
 import { useLocation, useNavigate, useParams } from 'react-router';
 import { useEffect, useState } from 'react';
-import { CustomPlace } from '../types/CustomPlace';
+import { Location } from '../types/entities';
 
 const PlaceDetail: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
 
-  const passedPlace = location.state?.place as CustomPlace | undefined;
+  const passedPlace = location.state?.place as Location | undefined;
 
-  const [place, setPlace] = useState<CustomPlace | null>(passedPlace || null);
+  const [place, setPlace] = useState<Location | null>(passedPlace || null);
 
   const [showPopup, setShowPopup] = useState(false); // PopUp placeholder
 
@@ -18,8 +18,8 @@ const PlaceDetail: React.FC = () => {
     if (!place && id) {
       const stored = localStorage.getItem('savedPlaces');
       if (stored) {
-        const savedPlaces: CustomPlace[] = JSON.parse(stored);
-        const found = savedPlaces.find((p) => p.id === id);
+        const savedPlaces: Location[] = JSON.parse(stored);
+        const found = savedPlaces.find((p) => p.locationId === parseInt(id));
         if (found) {
           setPlace(found);
         }
@@ -58,8 +58,8 @@ const PlaceDetail: React.FC = () => {
     const R = 6371;
     const lat1 = parseFloat(userLat);
     const lon1 = parseFloat(userLng);
-    const lat2 = place.lat;
-    const lon2 = place.lng;
+    const lat2 = place.latitude;
+    const lon2 = place.longitude;
     const dLat = (lat2 - lat1) * (Math.PI / 180);
     const dLon = (lon2 - lon1) * (Math.PI / 180);
     const a =
@@ -95,12 +95,15 @@ const PlaceDetail: React.FC = () => {
       <div className="card bg-base-100 shadow-md border max-w-2xl mx-auto p-6">
         <h2 className="text-4xl font-bold text-primary mb-4">{place.name}</h2>
 
-        <p className="text-lg text-gray-700 mb-4">{place.vicinity}</p>
+        <p className="text-lg text-gray-700 mb-4">{place.address}</p>
 
         <div className="flex items-center gap-2 mb-4">
           <span className="font-semibold">Fullness:</span>
-          <div className={`badge ${getBadgeColor(place.crowdedness)} capitalize`}>
+          {/* <div className={`badge ${getBadgeColor(place.crowdedness)} capitalize`}>
             {place.crowdedness || 'Unknown'}
+          </div> */}
+          <div className={`badge ${getBadgeColor("unknown")} capitalize`}>
+            Unknown
           </div>
         </div>
 
@@ -109,7 +112,9 @@ const PlaceDetail: React.FC = () => {
         </p>
 
         <p className="text-lg mb-2">
-          <span className="font-semibold">Sports available:</span> {place.sport || 'Unknown'}
+          <span className="font-semibold">Sports available:</span> {place.sports && place.sports.length > 0
+          ? place.sports.map((s) => s.name).join(", ")
+          : "Unknown"}
         </p>
 
         <div className="divider mt-6 mb-4">Update Crowdedness</div>

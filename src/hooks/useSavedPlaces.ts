@@ -1,15 +1,8 @@
 import { useState, useEffect } from "react";
-
-export interface SavedPlace {
-  id: string; // use lat+lng or place_id if available
-  name: string;
-  vicinity: string;
-  lat: number;
-  lng: number;
-}
+import { Location } from "../types/entities";
 
 export function useSavedPlaces() {
-  const [savedPlaces, setSavedPlaces] = useState<SavedPlace[]>([]);
+  const [savedPlaces, setSavedPlaces] = useState<Location[]>([]);
 
   useEffect(() => {
     const stored = localStorage.getItem("savedPlaces");
@@ -18,20 +11,21 @@ export function useSavedPlaces() {
     }
   }, []);
 
-  const savePlace = (place: SavedPlace) => {
-    if (savedPlaces.find((p) => p.id === place.id)) return;
+  const savePlace = (place: Location) => {
+    if (savedPlaces.some((p) => p.locationId === place.locationId)) return;
     const updated = [...savedPlaces, place];
     setSavedPlaces(updated);
     localStorage.setItem("savedPlaces", JSON.stringify(updated));
   };
 
-  const unsavePlace = (id: string) => {
-    const updated = savedPlaces.filter((p) => p.id !== id);
+  const unsavePlace = (locationId: number) => {
+    const updated = savedPlaces.filter((p) => p.locationId !== locationId);
     setSavedPlaces(updated);
     localStorage.setItem("savedPlaces", JSON.stringify(updated));
   };
 
-  const isSaved = (id: string) => savedPlaces.some((p) => p.id === id);
+  const isSaved = (locationId: number) =>
+    savedPlaces.some((p) => p.locationId === locationId);
 
   return { savedPlaces, savePlace, unsavePlace, isSaved };
 }

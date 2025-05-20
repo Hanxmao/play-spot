@@ -14,16 +14,11 @@ const SavedLocations: React.FC = () => {
         <p className="text-center text-gray-500">No saved locations yet.</p>
       ) : (
         <div className="grid gap-6 max-w-2xl mx-auto">
-          {savedPlaces.map((place) => (
-            <Link to={`/locations/${place.id}`} key={place.id}>
+          {savedPlaces.map((location) => (
+            <Link to={`/locations/${location.locationId}`} key={location.locationId}>
 
                 <PlaceCard
-                  id={place.id}
-                  name={place.name}
-                  vicinity={place.vicinity}
-                  lat={place.lat}
-                  lng={place.lng}
-                  showCrowdedness={false}
+                  location={location}
                 />
             </Link>
           ))}

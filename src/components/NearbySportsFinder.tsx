@@ -3,6 +3,7 @@ import { useNavigate } from "react-router";
 import { useNearbySports } from "../context/NearbySportsContext";
 import PlaceCard from "./PlaceCard";
 import axios from "axios";
+import { Location } from "../types/entities";
 
 
 const NearbySportsFinder: React.FC = () => {
@@ -26,25 +27,24 @@ const handleSportChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
           const { latitude, longitude } = position.coords;
           sessionStorage.setItem("userLat", latitude.toString());
           sessionStorage.setItem("userLng", longitude.toString());
-
-          const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/locations`);
+          const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/locations`);
           console.log("API response:", response.data);
           console.log("Filtering for sport:", selectedSport);
 
           // Filter places by selected sport
           const filtered = response.data
-            .filter((loc: any) =>
+            .filter((loc: Location) =>
               loc.sports.some((s: any) =>
                 s.name.toLowerCase() === selectedSport.toLowerCase()
               )
             )
-            .map((loc: any) => ({
-              id: loc.locationId,
+            .map((loc: Location) => ({
+              locationId: loc.locationId,
               name: loc.name,
-              vicinity: loc.address,
-              lat: loc.latitude,
-              lng: loc.longitude,
-              sport: selectedSport,
+              address: loc.address,
+              latitude: loc.latitude,
+              longitude: loc.longitude,
+              sports: loc.sports,
             }));
 
           setPlaces(filtered);
@@ -102,20 +102,16 @@ const handleSportChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
 
       {!loading && places.length > 0 && (
         <div className="grid gap-6 max-w-2xl mx-auto">
-          {places.map((place, idx) => (
+          {places.map((place) => (
             <div
-              key={idx}
-              onClick={() =>
-                navigate(`/locations/${place.id}`, { state: { place } })
-              }
+              key={place.locationId}
+              onClick={() =>{
+                navigate(`/locations/${place.locationId}`, { state: { place: place } })
+              }}
               className="cursor-pointer transition transform hover:scale-105"
             >
               <PlaceCard
-                id={`${place.id}`} // generate a unique ID if no place_id
-                name={place.name}
-                vicinity={place.vicinity}
-                lat={place.lat}
-                lng={place.lng}
+                location={place}
               />
             </div>
           ))}
