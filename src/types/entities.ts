@@ -6,4 +6,5 @@ export interface Location {
     longitude: number;
     sports: any[];
     locationActivities: string[];
+    fullnessScore?: number;
   }
