@@ -12,9 +12,8 @@ const LocationsPage = () => {
   useEffect(() => {
     const fetchLocations = async () => {
       try {
-        const response = await axios.get(`http://localhost:5102/locations`);
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/locations`);
         setAllLocations(response.data);
-        console.log("Local backend response:", response.data);
       } catch (error) {
         console.error("Error fetching locations:", error);
       } finally {

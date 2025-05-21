@@ -3,11 +3,13 @@ import { useSavedPlaces } from "../hooks/useSavedPlaces";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { Location } from "../types/entities";
 
+
 interface PlaceCardProps {
   location: Location;
   crowdedness?: "full" | "crowded" | "moderate" | "available";
-  showCrowdedness?: boolean;
+  showCrowdedness?: boolean
 }
+
 
 const getColor = (status?: string) => {
   switch (status) {
@@ -39,28 +41,13 @@ const getCrowdednessDescription = (status?: string) => {
   }
 };
 
-//Map numeric score to crowdedness
-const getCrowdednessFromScore = (
-  score: number
-): "full" | "crowded" | "moderate" | "available" => {
-  if (score >= 90) return "full";
-  if (score >= 70) return "crowded";
-  if (score >= 40) return "moderate";
-  return "available";
-};
-
 const PlaceCard: React.FC<PlaceCardProps> = ({
   location,
   crowdedness,
-  showCrowdedness = true,
+  showCrowdedness = true
 }) => {
   const { savePlace, unsavePlace, isSaved } = useSavedPlaces();
   const saved = isSaved(location.locationId);
-
-  // Derive crowdedness from fullnessScore if not provided
-  const derivedCrowdedness =
-    crowdedness || getCrowdednessFromScore(location.fullnessScore ?? 0);
-
   const handleToggleSave = () => {
     if (saved) {
       unsavePlace(location.locationId);
@@ -68,7 +55,6 @@ const PlaceCard: React.FC<PlaceCardProps> = ({
       savePlace(location);
     }
   };
-
   return (
     <div className="card bg-base-100 shadow-md border hover:shadow-lg transition">
       <div className="card-body p-4">
@@ -78,7 +64,7 @@ const PlaceCard: React.FC<PlaceCardProps> = ({
             <button
               className="btn btn-ghost text-red-500"
               onClick={(e) => {
-                e.stopPropagation();
+                e.stopPropagation(); 
                 handleToggleSave();
               }}
             >
@@ -87,20 +73,16 @@ const PlaceCard: React.FC<PlaceCardProps> = ({
             <div
               className="tooltip tooltip-top"
               data-tip={
-                derivedCrowdedness
-                  ? `${derivedCrowdedness.toUpperCase()} — ${getCrowdednessDescription(
-                      derivedCrowdedness
+                crowdedness
+                  ? `${crowdedness.toUpperCase()} — ${getCrowdednessDescription(
+                      crowdedness
                     )}`
                   : "Waiting for update"
               }
             >
-              {showCrowdedness && (
-                <div
-                  className={`badge ${getColor(derivedCrowdedness)} capitalize`}
-                >
-                  {derivedCrowdedness || "Unknown"}
-                </div>
-              )}
+              {showCrowdedness &&  <div className={`badge ${getColor(crowdedness)} capitalize`}>
+                {crowdedness || "Unknown"}
+              </div>}
             </div>
           </div>
         </div>
