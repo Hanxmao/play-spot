@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useLocation, useNavigate, useParams } from 'react-router';
 import { useEffect, useState } from 'react';
 import { Location } from '../types/entities';
@@ -45,8 +46,27 @@ const PlaceDetail: React.FC = () => {
     }
   };
 
-  const updateCrowdedness = (status: 'full' | 'crowded' | 'moderate' | 'available') => {
+  const updateCrowdedness = async (status: 'full' | 'crowded' | 'moderate' | 'available') => {
     setPlace((prev) => (prev ? { ...prev, crowdedness: status } : prev));
+
+    var fullnessLevel = 0;
+
+    if (status === 'full') {
+      fullnessLevel = 4;
+    } else if (status === 'crowded') {
+      fullnessLevel = 3;
+    } else if (status === 'moderate') {
+      fullnessLevel = 2;
+    } else if (status === 'available') {
+      fullnessLevel = 1;
+    } else {
+      fullnessLevel = 0;
+    }
+
+    if (place&&place.locationId !== undefined) {
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/fullness/create?locationId=${place.locationId}&fullnessLevel=${fullnessLevel}`);
+      console.log("API response:", response.data);
+    }
 
     // Show thank you popup
     setShowPopup(true);
