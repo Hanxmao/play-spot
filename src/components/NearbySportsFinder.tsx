@@ -51,7 +51,7 @@ const NearbySportsFinder: React.FC = () => {
 
             //online deployment
             const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/locations`);
-            console.log("API response:", response.data);
+            //console.log("API response:", response.data);
 
             const filtered = response.data
               .filter((loc: Location) => {
