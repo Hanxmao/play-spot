@@ -24,6 +24,16 @@ const NavBar: React.FC = () => {
           </li>
           <li>
             <NavLink
+              to="/map"
+              className={({ isActive }) =>
+                isActive ? "active text-primary font-bold" : ""
+              }
+            >
+              Map
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
               to="/locations"
               className={({ isActive }) =>
                 isActive ? "active text-primary font-bold" : ""

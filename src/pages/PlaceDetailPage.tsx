@@ -46,10 +46,20 @@ const PlaceDetail: React.FC = () => {
     }
   };
 
+  const getCrowdednessFromScore = (score: number | undefined): "full" | "crowded" | "moderate" | "available" => {
+    if (score === undefined) return "available";
+    if (score >= 90) return "full";
+    if (score >= 70) return "crowded";
+    if (score >= 40) return "moderate";
+    return "available";
+  };
+
+  const derivedCrowdedness = place ? getCrowdednessFromScore(place.fullnessScore) : undefined;
+
   const updateCrowdedness = async (status: 'full' | 'crowded' | 'moderate' | 'available') => {
     setPlace((prev) => (prev ? { ...prev, crowdedness: status } : prev));
 
-    var fullnessLevel = 0;
+    let fullnessLevel = 0;
 
     if (status === 'full') {
       fullnessLevel = 4;
@@ -119,11 +129,8 @@ const PlaceDetail: React.FC = () => {
 
         <div className="flex items-center gap-2 mb-4">
           <span className="font-semibold">Fullness:</span>
-          {/* <div className={`badge ${getBadgeColor(place.crowdedness)} capitalize`}>
-            {place.crowdedness || 'Unknown'}
-          </div> */}
-          <div className={`badge ${getBadgeColor("unknown")} capitalize`}>
-            Unknown
+          <div className={`badge ${getBadgeColor(derivedCrowdedness)} capitalize`}>
+            {derivedCrowdedness || 'Unknown'}
           </div>
         </div>
 
@@ -171,6 +178,17 @@ const PlaceDetail: React.FC = () => {
               </div>
             </div>
           )}
+        </div>
+        
+        <div className="divider mt-6 mb-4">Map View</div>
+
+        <div className="flex justify-center mb-4">
+          <button
+            className="btn btn-primary w-1/2"
+            onClick={() => navigate(`/map?locationId=${place.locationId}`)}
+          >
+            View on Map
+          </button>
         </div>
       </div>
     </div>
