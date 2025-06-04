@@ -126,6 +126,14 @@ const NearbySportsFinder: React.FC = () => {
         </div>
       )}
 
+      <div className="flex justify-center mb-6">
+        <button className="btn btn-primary w-1/2 capitalize" onClick={() => sportType
+            ? navigate(`/map?sportName=${sportType}`)
+            : navigate("/map")}>
+          {sportType} Map View
+        </button>
+      </div>
+
       {!loading && places.length > 0 && (
         <div className="grid gap-6 max-w-2xl mx-auto">
           {places.map((place) => (

@@ -3,6 +3,7 @@ import App from "./App.tsx";
 import PlaceDetail from "./pages/PlaceDetailPage.tsx";
 import ErrorPage from "./pages/ErrorPage.tsx";
 import HomePage from "./pages/HomePage.tsx";
+import MapPage from "./pages/MapPage.tsx";
 import SavedLocations from "./pages/SavedLocations.tsx";
 import LocationsPage from "./pages/LocationsPage.tsx";
 
@@ -13,6 +14,7 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     children: [
       { index: true, element: <HomePage /> }, // index/default page
+      { path: "map", element: <MapPage /> },
       { path: "locations", element: <LocationsPage /> },
       { path: "locations/:id", element: <PlaceDetail /> },
       { path: "saved", element: <SavedLocations />},
