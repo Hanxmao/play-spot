@@ -18,7 +18,7 @@ const LocationsPage = () => {
         const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/locations`);
 
       //localhost development
-      //  const response = await axios.get(`http://localhost:5102/locations`);
+      //const response = await axios.get(`http://localhost:5102/locations`);
         setAllLocations(response.data);
         setFilteredLocations(response.data);
       } catch (error) {
