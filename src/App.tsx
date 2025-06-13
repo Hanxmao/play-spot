@@ -11,8 +11,10 @@ function App() {
         <IosInstallPrompt />
         <ServiceWorkerWrapper />
         <NearbySportsProvider >
-        <NavBar />
-        <Outlet />
+          <main>
+            <NavBar />
+            <Outlet />
+          </main>
         </NearbySportsProvider>
       </div>
     </>
