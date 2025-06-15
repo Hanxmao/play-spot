@@ -74,7 +74,11 @@ const PlaceDetail: React.FC = () => {
     }
 
     if (place&&place.locationId !== undefined) {
-      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/fullness/create?locationId=${place.locationId}&fullnessLevel=${fullnessLevel}`);
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL_FULLNESS}/api/Fullness`,
+        {
+          locationId: place.locationId,
+          fullnessLevel: fullnessLevel
+        });
       console.log("API response:", response.data);
     }
 

@@ -15,7 +15,7 @@ const LocationsPage = () => {
     const fetchLocations = async () => {
       try {
         // online deployment
-        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/locations`);
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL_COMPOSITE}/api/Composite/locations`);
 
       //localhost development
       //  const response = await axios.get(`http://localhost:5102/locations`);

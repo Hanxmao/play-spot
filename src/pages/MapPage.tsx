@@ -63,10 +63,11 @@ const MapPage : React.FC = () => {
             try {                
                 const [locationsResponse, sportsResponse] = await Promise.all([
                     axios.get(sportName
-                        ? `${import.meta.env.VITE_BACKEND_URL}/locations?sportName=${sportName}`
-                        : `${import.meta.env.VITE_BACKEND_URL}/locations`
+                        ? `${import.meta.env.VITE_BACKEND_URL_COMPOSITE}/api/Composite/locations?sportName=${sportName}`
+                        : `${import.meta.env.VITE_BACKEND_URL_COMPOSITE}/api/Composite/locations`
                     ),
-                    axios.get(`${import.meta.env.VITE_BACKEND_URL}/sports`),
+                    axios.get(`${import.meta.env.VITE_BACKEND_URL_SPORT}/api/Sport/names`),
+                    // axios.get(`${import.meta.env.VITE_BACKEND_URL}/sports`),
                 ]);
 
                 const fetchedLocations = locationsResponse.data as Location[];
