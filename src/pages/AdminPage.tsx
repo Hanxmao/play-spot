@@ -137,11 +137,51 @@ const AdminPage : React.FC = () => {
 
                     <form className='mt-4 space-y-2' onSubmit={handleCreateLocation}>
                         <h3 className='text-lg'>New Location</h3>
-                        <input className='w-full border p-1' placeholder='Name' value={newLocation.name} onChange={(e) => setNewLocation({ ...newLocation, name: e.target.value })} required />
-                        <input className='w-full border p-1' placeholder='Address' value={newLocation.address} onChange={(e) => setNewLocation({ ...newLocation, address: e.target.value })} required />
-                        <input className='w-full border p-1' placeholder='Latitude' type='number' value={newLocation.latitude} onChange={(e) => setNewLocation({ ...newLocation, latitude: parseFloat(e.target.value) })} required />
-                        <input className='w-full border p-1' placeholder='Longitude' type='number' value={newLocation.longitude} onChange={(e) => setNewLocation({ ...newLocation, longitude: parseFloat(e.target.value) })} required />
-                        <button type='submit' className='btn mt-2 px-2 py-1 bg-green-500 text-white rounded'>Create Location</button>
+                        <input
+                            className='w-full border p-1'
+                            placeholder='Name'
+                            value={newLocation.name}
+                            onChange={(e) => setNewLocation({ ...newLocation, name: e.target.value })}
+                            required
+                        />
+                        <input
+                            className='w-full border p-1'
+                            placeholder='Address'
+                            value={newLocation.address}
+                            onChange={(e) => setNewLocation({ ...newLocation, address: e.target.value })}
+                            required
+                        />
+                        <input
+                            className='w-full border p-1'
+                            type='number'
+                            min='-90'
+                            max='90'
+                            step='any'
+                            value={newLocation.latitude === 0 ? '' : newLocation.latitude}
+                            onChange={(e) => {
+                                const value = e.target.value === '' ? 0 : parseFloat(e.target.value);
+                                setNewLocation({ ...newLocation, latitude: value });
+                            }}
+                            placeholder='Latitude (-90 to 90)'
+                            required
+                        />
+                        <input
+                            className='w-full border p-1'
+                            type='number'
+                            min='-180'
+                            max='180'
+                            step='any'
+                            value={newLocation.longitude === 0 ? '' : newLocation.longitude}
+                            onChange={(e) => {
+                                const value = e.target.value === '' ? 0 : parseFloat(e.target.value);
+                                setNewLocation({ ...newLocation, longitude: value });
+                            }}
+                            placeholder='Longitude (-180 to 180)'
+                            required
+                        />
+                        <button type='submit' className='btn mt-2 px-2 py-1 bg-green-500 text-white rounded'>
+                            Create Location
+                        </button>
                     </form>
                 </div>
 
