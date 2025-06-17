@@ -4,6 +4,7 @@ import { useNearbySports } from "../context/NearbySportsContext";
 import PlaceCard from "./PlaceCard";
 import axios from "axios";
 import { Location } from "../types/entities";
+import { getApiBaseUrl } from '../utils/getApiBaseUrl';
 
 const getDistanceFromLatLonInKm = (
   lat1: number,
@@ -46,12 +47,7 @@ const NearbySportsFinder: React.FC = () => {
             sessionStorage.setItem("userLat", latitude.toString());
             sessionStorage.setItem("userLng", longitude.toString());
 
-            //localhost development
-            // const response = await axios.get(`http://localhost:5102/locations`);
-
-            //online deployment
-            const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/locations`);
-            //console.log("API response:", response.data);
+            const response = await axios.get(`${getApiBaseUrl()}/locations`);
 
             const filtered = response.data
               .filter((loc: Location) => {

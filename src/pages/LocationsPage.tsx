@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import PlaceCard from "../components/PlaceCard";
 import { Location } from "../types/entities";
+import { getApiBaseUrl } from '../utils/getApiBaseUrl';
 
 const LocationsPage = () => {
   const [allLocations, setAllLocations] = useState<Location[]>([]);
@@ -14,11 +15,7 @@ const LocationsPage = () => {
   useEffect(() => {
     const fetchLocations = async () => {
       try {
-        // online deployment
-        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/locations`);
-
-      //localhost development
-      //const response = await axios.get(`http://localhost:5102/locations`);
+        const response = await axios.get(`${getApiBaseUrl()}/locations`);
         setAllLocations(response.data);
         setFilteredLocations(response.data);
       } catch (error) {
