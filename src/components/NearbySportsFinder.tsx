@@ -47,7 +47,11 @@ const NearbySportsFinder: React.FC = () => {
             sessionStorage.setItem("userLat", latitude.toString());
             sessionStorage.setItem("userLng", longitude.toString());
 
-            const response = await axios.get(`${getApiBaseUrl()}/locations`);
+            //localhost development
+            // const response = await axios.get(`http://localhost:5102/locations`);
+
+            //online deployment
+            const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL_COMPOSITE}/api/Composite/locations`);
 
             const filtered = response.data
               .filter((loc: Location) => {

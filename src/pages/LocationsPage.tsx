@@ -15,7 +15,12 @@ const LocationsPage = () => {
   useEffect(() => {
     const fetchLocations = async () => {
       try {
-        const response = await axios.get(`${getApiBaseUrl()}/locations`);
+        // online deployment
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL_COMPOSITE}/api/Composite/locations`);
+
+        // localhost development
+        //const response = await axios.get(`http://localhost:5102/locations`);
+      
         setAllLocations(response.data);
         setFilteredLocations(response.data);
       } catch (error) {
