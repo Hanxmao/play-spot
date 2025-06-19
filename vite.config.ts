@@ -38,4 +38,7 @@ export default defineConfig({
       },
     }),
   ],
+  define: {
+    __APP_BACKEND_URL__: JSON.stringify(process.env.VITE_BACKEND_URL || 'http://localhost:5102'),
+  },
 })
